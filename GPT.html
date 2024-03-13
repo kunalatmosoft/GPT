@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generative AI Demo</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: rgb(56, 55, 55);
+}
+
+.container {
+  text-align: center;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#output {
+  margin-top: 20px;
+}
+.hen{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 950px;
+  padding: 20px;
+  border-radius: 20px;
+  position: relative;
+  background-color: #1a1a1a;
+  color: #fff;
+  border: 1px solid #333;
+  color:azure
+}
+.h{
+font-weight:20px;
+  display: inline-block;
+  background: linear-gradient(45deg, #ff00cc, #3333ff, #33cc33);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: h 3s infinite;
+}
+@keyframes h {
+  0% {
+    background-position: 0% 50%;
+    color: #ff00cc;
+  }
+  50% {
+    background-position: 100% 50%;
+    color: #3333ff;
+  }
+  100% {
+    background-position: 0% 50%;
+    color: #33cc33;
+  }
+}
+  </style>
+</head>
+<body>
+  <h1 class="h">ATARD-AI</h1><br>
+  <header>    <div class="container-sm hen" id="output"></div><br><br><br><br><br><br><br>
+  </header>
+<footer>
+  <div class="container">
+
+    <input type="text"  id="promptInput" placeholder="Enter your prompt" class="form-control" ><br>
+    <button id="generateBtn" class="btn btn-outline-primary" type="button" >generate</button>
+
+  </div>
+
+</footer>
+  <script type="importmap">
+    {
+      "imports": {
+        "@google/generative-ai": "https://esm.run/@google/generative-ai"
+      }
+    }
+  </script>
+  <script type="module">
+    // Replace 'API_KEY' with your actual API key
+const API_KEY = 'AIzaSyArv_V4zrjE9VzBAOui6KZq16RGY5hW0qI';
+
+import { GoogleGenerativeAI } from "@google/generative-ai";
+const genAI = new GoogleGenerativeAI(API_KEY);
+
+async function run() {
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+  const generateBtn = document.getElementById("generateBtn");
+  const outputDiv = document.getElementById("output");
+  const promptInput = document.getElementById("promptInput");
+
+  generateBtn.addEventListener("click", async () => {
+  const userPrompt = promptInput.value.trim();
+  if (userPrompt) {
+    try {
+      const result = await model.generateContent(userPrompt);
+      const response = await result.response;
+      const text = response.text();
+
+      outputDiv.innerText = text;
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred. Please check the console for details.");
+    }
+  } else {
+    alert("Please enter a prompt.");
+  }
+});
+}
+run();
+
+  </script>
+</body>
+</html>
